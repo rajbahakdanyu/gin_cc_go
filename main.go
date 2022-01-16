@@ -1,6 +1,10 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 type book struct {
 	ID       string `json:"id"`
@@ -15,14 +19,14 @@ var books = []book{
 	{ID: "3", Title: "War and Peace", Author: "Leo Tolstoy", Quantity: 6},
 }
 
+func getBooks(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, books)
+}
+
 func main() {
 	r := gin.Default()
 
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Yellow",
-		})
-	})
+	r.GET("/books", getBooks)
 
 	r.Run("localhost:8000")
 }
